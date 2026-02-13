@@ -3,7 +3,7 @@ const path = require('path');
 
 const FILE_PATH = path.join(__dirname, 'PriestSpells.json');
 
-function fixSchools() {
+function fixPriestSchools() {
     try {
         if (!fs.existsSync(FILE_PATH)) {
             console.error("File not found!");
@@ -52,4 +52,4 @@ function fixSchools() {
     }
 }
 
-fixSchools();
+fixPriestSchools();
