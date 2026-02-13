@@ -754,6 +754,20 @@
   },
   {
     "done": true,
+    "name": "Sentry of Helm (F&A Helm)",
+    "lvl": 1,
+    "schools": "(Conjuration/Summoning)",
+    "spheres": "Guardian, Travelers ",
+    "range": "0",
+    "componenets": "V, S, M ",
+    "duration": "8 hours or until triggered",
+    "casting": "1 hour",
+    "aoe": "120-foot diameter sphere",
+    "save": "None",
+    "description": "This spell was created by the priests of Helm to aid in guard duty while most\nmembers of a group of travelers in the wild are sleeping. Like the 1st-level\nwizard spell unseen servant, this spell creates an invisible, mindless, and\nshapeless force. This force cannot fight and, unlike an unseen servant, it cannot\naffect its physical surrounding except as indicated below.\nThe priest casts this spell by walking the perimeter of the area of effect\nsprinkling pinches of sand every few feet and then returning to the center of\nthe area of effect. Once the spellcasting is completed, the shadowy sentry\nstands guard in the center of the area of effect and the caster immediately\nfalls asleep.\nIf any visible object over 1 foot in length, width, or height which was not\npresent during the casting of the spell enters the area of effect while the spell\nis in operation or if the spell is about to end, the shadowy force silently\nA visible object must be an object that a guard could have\nshakes the caster awake. When the caster awakes, the priest is wide awake\nperceived with\nand aware that something has triggered the sentry or that the spell has\nnormal vision if she or he had been awake and on guard duty.\nended. The spell then immediately expires.\nVisible objects\ncannot be invisible, hiding in shadows, or hidden behind walls, trees, or earth.\nIf this spell is cast by a priest of 5th level or higher, the sentry of Helm also\nhas 60-foot infravision in addition to normal sight, and what is visible to it\nincludes beings seen with that faculty.\nThe material component of this spell is the priest’s holy symbol and a\nsmall bag of fine sand."
+  },
+  {
+    "done": true,
     "name": "Skeletal Servant",
     "lvl": 1,
     "schools": "Necromancy",
@@ -1930,6 +1944,20 @@
   },
   {
     "done": true,
+    "name": "Forceward (F&A Helm)",
+    "lvl": 3,
+    "schools": "(Abjuration)",
+    "spheres": "Wards",
+    "range": "0 ",
+    "componenets": "V, S, M",
+    "duration": "1 round/level ",
+    "casting": "1 round ",
+    "aoe": "Sphere of 10-foot-radius/level ",
+    "save": "Special ",
+    "description": "This spell creates a spherical area of protection. The air within glows\nfaintly. This radiance is barely visible in full sunlight, but the area is clearly\nlit in darkness. When forceward is cast, all creatures except those touched\nor named by the priest in the spellcasting must make a saving throw vs.\nspell or be forced away from the caster for 10 feet per level of the caster,\nwithdrawing immediately. This forceward is then fixed at a location centered\non the where the caster was when the spell was completed; it does not\nmove with the caster.\nWarded creatures must remain outside the protected area for the spell duration\nunless they make a successful saving throw vs. spell at a -3 penalty to\nbreak into the warded area. Creatures attempting to break in are allowed\none such saving throw per round. Any creature breaking through the forceward\nmay move and act freely within its confines, but cannot confer freedom\nfrom the forceward to others, even by attempting to drag them along.\nAny creature may freely leave the warded area but must successfully\nmake a saving throw vs. spell (with the -3 penalty) to reenter, even if originally\ndesignated as protected when the spell was cast or if successful earlier\nin breaching the forceward. Missiles and spells may be launched freely into\nand out of the warded area.\nThe forceward ends instantly if the casting priest leaves its confines, is\nslam or rendered unconscious, or wills the ward out of existence. The caster\nmay engage in spellcasting without affecting the forceward; continuous concentration\nis not required to maintain it. A successful dispel magic spell destroys\na forceward instantly.\nThe material components are a string of gems, rock crystals, or glass\nbeads, plus the caster’s holy symbol."
+  },
+  {
+    "done": true,
     "name": "Fortify ",
     "lvl": 3,
     "schools": "(Alteration) ",
@@ -1969,6 +1997,20 @@
     "aoe": "Creature touched  ",
     "save": "None ",
     "description": "This spell is an improved version of slow poison, with a duration measured in  days rather than hours. When cast upon a victim who has been poisoned by any means,  hold poison arrests the venom and prevents it from doing any additional damage to the  victim. (In most cases, the spell must be cast during the poison’s onset time in order to be  effective.) Damage that has already been inflicted is not restored, but as long as the hold  poison is in effect, the victim can be cured or healed of damage caused by poison by any  normal means.    This spell can be used to indefinitely postpone the onset of a poison if the caster  chooses to continue to cast it on the poisoned character before the previous hold poison  wears off. However, each time a new hold poison is used to stop the venom’s advance for  another few days, there is a 2% cumulative chance that the spell fails and the poison runs  its course. Evil priests have been known to deliberately poison a person and then use this  spell to grant the victim a stay of death for a few days. This can be an extremely effective  threat if the victim doesn’t have access to a neutralize poison spell.    The material component is the priest’s holy symbol and a bud of garlic, crushed  and smeared on the injury (or eaten if the poison was ingested). "
+  },
+  {
+    "done": true,
+    "name": "Mace of Odo (F&A Helm)",
+    "lvl": 3,
+    "schools": "(Evocation)",
+    "spheres": "Combat ",
+    "range": "0 ",
+    "componenets": "V, S, M",
+    "duration": "Until it successfully strikes or 4 rounds, whichever comes first ",
+    "casting": "1 round",
+    "aoe": "One magical macelike construct ",
+    "save": "Special",
+    "description": "This spell enables a priest to create a magical mace in his or her hand. A mace of Odo is actually a mace-shaped construct of force. It is translucent, but glows bright white. Its radiance equal in effect to a light spell, though it cannot be extinguished by darkness spells. The mace of Odo can be wielded immediately when casting is complete, or it can be held for up to three rounds. All spells cast directly at the bearer of a mace of Odo are absorbed harmlessly by the mace; area-of-effect spells are not affected by the mace.\n\nA mace of Odo strikes at a +5 bonus to attack rolls and does 3d6 points of damage to most creatures; it does 4d6 points of damage to undead creatures. Creatures of 2 HD or less suffer only 1 point of damage when struck by a mace of Odo but must make a successful saving throws vs. paralyzation or be paralyzed for Id4+1 turns. Whenever a mace of Odo successfully strikes or four rounds after the round of its casting (whichever comes first), the mace vanishes instantly in a burst of white radiance equal to a continual light spell.\n\nThe material components for this spell are a stone, a piece of wood, and two drops of holy water."
   },
   {
     "done": true,
@@ -2137,6 +2179,20 @@
     "aoe": "One creature/5 levels of the caster within a 20' cube ",
     "save": "Special ",
     "description": "This spell can be cast in one of two ways: in a manner that affects the priest, or in a  manner that affects a subject other than the priest.    The first method affects only the priest and allows him to shield his true emotions  from magical examination. Thus, it can block wizard spells such as ESP or priest spells  such as emotion read. While emotion control is in effect, anyone using one of these spells  will sense the emotion designated by the priest rather than his true emotions. When the  priest casts emotion control, he designates the false emotion he wishes to be revealed.    This use of emotion control also gives the priest a +2 bonus to saving throws against  the following spells: spook, taunt, irritation, know alignment, scare, emotion, fear, and  phantasmal killer. When any of these spells are cast on the priest, he is immediately  aware of the attempt, although he does not learn the source of the spell.    If another character casts emotion read, ESP, or a similar spell on the priest, the priest  must make a saving throw vs. spells with a +1 bonus for each 5 levels of the priest. If the  priest successfully saves, the other spellcaster reads the false emotion; if the priest fails  the saving throw, the spellcaster reads the priest's true emotion.    The second use of this spell allows the priest to create a single emotional reaction in  the subject(s) (similar to the wizard spell emotion). Some typical emotions follow, but the  DM may allow other similar effects.    Courage: The subject becomes berserk, gaining +1 to attack rolls and +3 to damage,  and temporarily gaining 4 hit points (damage against the subject is deducted from these  temporary points first). The subject need never check morale, and receives a +5 bonus to  saving throws against the various forms of fear. Courage counters (and is countered by)  fear.    Fear: The subject flees from the priest for the duration of the spell, even if this takes  him out of spell range. Fear counters (and is countered by) courage.    Friendship: The subject reacts positively to any encounter; in game terms, any result  of a roll on the Encounter Reactions table (Table 59 in the DMG ) is moved one column  to the left. Thus, a threatening PC becomes cautious, an indifferent PC becomes friendly,  etc. Friendship counters (and is countered by) hate.    Happiness: The subject experiences feelings of warmth, well-being, and confidence,  modifying all reaction rolls by +3. The subject is unlikely to attack unless provoked.  Happiness counters (and is countered by) sadness.    Hate: The subject reacts negatively to any encounter; in game terms, any result of a  roll on the Encounter Reactions table is moved one column to the right (i.e., a friendly PC  becomes indifferent, a cautious PC becomes threatening, etc.). Hate counters (and is  countered by) friendship.    Hope: The subject's morale is improved by +2. His saving throw rolls, attack, and  damage rolls are all improved by +1 while this emotion is in effect. Hope counters (and is  countered by) hopelessness.    Hopelessness: The subject's morale suffers a -10 penalty. In addition, in the round in  which the emotion is initially established, all subjects must immediately make a morale  check. Hopelessness counters (and is countered by) hope.    Sadness: The subject feels uncontrollably glum and is prone to fits of morose  introspection. All attack rolls suffer a -1 penalty and initiative rolls suffer a +1 penalty.  The subject's chance of being surprised is increased by -2. Sadness counters (and is  countered by) happiness.   All subjects of the second version, even willing targets, must save vs. spell to resist  the emotion. In addition to all other modifiers, the saving throw is modified by -1 for  every three levels of the priest casting the spell.  The material component for both versions of the spell is a small bunch of fleece or  uncarded wool that is consumed in the casting.  "
+  },
+  {
+    "done": true,
+    "name": "Exaltation (F&A Helm)",
+    "lvl": 3,
+    "schools": "(Abjuration, Conjuring/Summoning",
+    "spheres": "Combat, Healing ",
+    "range": "Touch",
+    "componenets": "V, S, M ",
+    "duration": "1 round/level",
+    "casting": "1 round",
+    "aoe": "One creature",
+    "save": "Special",
+    "description": "This spell enables a priest to aid and protect any one other being. The priest\ncannot cast this spell upon himself or herself. By touch, the caster removes\nthe effects of fear, sleep, feeblemindedness, hunger, pain, nausea, unconsciousness,\nintoxication, and insanity from the spell recipient (who may be\nof any alignment or faith). The recipient is protected against spells and\nother attacks that cause these effects for the duration of the spell. Such effects\nare negated, not postponed until the spell expires.\nWhen this spell is cast on a being of a different alignment and faith than\nthe caster, the recipient must make a saving throw vs. spell even if willing to\nhave the spell cast on him or her. If the saving throw is successful, the spell\nis lost and has no effect.\nIf the spell recipient is of the same alignment as the priest but of a different\nfaith, the saving throw is at a -4 penalty. If the spell is successful, the exalted\nrecipient receives a +1 morale bonus to any morale checks and +1 reaction\nadjustment for surprise checks for the spell duration.\nIf the spell recipient worships the same deity as the caster but is of another\nalignment, the saving throw is at a -6 penalty. A successfully exalted\nrecipient gets a +1 morale bonus to any morale checks for the spell duration.\nA recipient of the same faith and alignment as the caster need make no\nsaving throw, gets a +2 morale bonus to any morale checks for the spell duration,\nand—if the caster desires—radiates a white, blue-white, or amber radiance\nfor the duration of the spell. If the radiance is desired, it is evoked immediately\nand cannot be ended before the spell expires.\nThe material components for this spell are a flask of holy water and a\npowdered sapphire or diamond of at least 1000 gp value."
   },
   {
     "done": true,
@@ -2739,6 +2795,20 @@
     "aoe": "10-ft. radius ",
     "save": "None",
     "description": "When this spell is cast, the priest creates an invisible barrier to all sorts of insects, and normal insects do not approach within 10 feet of the caster while the spell is in effect. Giant insects with Hit Dice less than 1/3 of the caster's experience level are also repelled (for example, 2 Hit Dice for 7th- to 9th-level casters, 3 Hit Dice at 10th through 12th level, etc.). Insects with more Hit Dice can enter the protected area if the insect is especially aggressive and, in addition, rolls a successful saving throw vs. spell. Those that do sustain 1d6 points of damage from passing through the magical barrier. Note that the spell does not in any way affect arachnids, myriapods, and similar creatures--it affects only true insects. The material components of the repel insects spell include any one of the following: several crushed marigold flowers, a whole crushed leek, seven crushed stinging nettle leaves, or a small lump of resin from a camphor tree."
+  },
+  {
+    "done": true,
+    "name": "Seeking Sword (F&A Helm)",
+    "lvl": 4,
+    "schools": "(Evocation)",
+    "spheres": "Combat",
+    "range": "30 yards ",
+    "componenets": "V, S, M",
+    "duration": "2 rounds/level ",
+    "casting": "7",
+    "aoe": "One magical swordlike construct ",
+    "save": "None ",
+    "description": "This spell brings into being a shimmering blade of force that appears as a\nsword of any description the caster desires, typically a broad sword. The\nsword forms in midair and is animated by the will of the caster (who need\nnever touch it), flashing about as it attacks. The blade is silent and moves\nat MV FL 96 (A), although it cannot move beyond spell range from the\ncaster. The blade can strike four times per round, doing 2d4 points of damage\nwith each successful hit.\nAlthough it has no attack bonuses, a seeking sword is considered a +4\nmagical weapon for determining what sorts of beings it can strike. It can\nstrike nonliving objects and can be wielded dexterously enough to lift\nlatches, slide bolts open or shut, turn pages of books, and so on. The caster\nmay freely move the sword from target to target unless physical or magical\nbarriers (such as a wall of force) are in the way, but the caster must concentrate\non the blade to maintain its existence and direct it. Other spellcasting\nis impossible while maintaining the spell, though the caster may move at\nhalf his or her normal movement rate per round while doing so.\nA seeking sword moves with Strength enough to parry and hold back another\nblade wielded by a strong human or humanoid. It can be used to shatter\nglass objects, spike open doors, puncture sacks, or search for unseen opponents\nby sweeping through apparently empty spaces or across windowsills\nand thresholds.\nThe material components for this spell are a drop of mercury and a\nhuman hair."
   },
   {
     "done": true,
@@ -3592,6 +3662,20 @@
     "aoe": "10 ft. sq./level, 1 spike/sq. ft.",
     "save": "None",
     "description": "The spike stones spell causes rock to shape itself into long, sharp points that tend to blend into the background. It is effective on both natural rock and worked stone. The spike stones serve to impede progress through an area and to inflict damage. If an area is carefully observed, each observer is 25% likely to notice the sharp points of rock. Otherwise, those entering the spell's area of effect suffer 1d4 points of damage per round. The success of each attack is determined as if the caster of the spell were actually engaging in combat. Those entering the area are subject to attack immediately upon setting foot in the area and for each round spent in the area thereafter. The initial step enables the individual to become aware of some problem only if the initial attack succeeds; otherwise movement continues and the spike stones remain unnoticed until damage occurs. Charging or running victims suffer two attacks per round. Those falling into pits affected by spike stones suffer six such attacks for every 10 feet fallen, each attack having a +2 bonus to the attack roll. In addition, the damage inflicted by each attack increases by +2 for every 10 feet fallen. Finally, the creatures also suffer normal falling damage. The material component of this spell is four tiny stalactites."
+  },
+  {
+    "done": true,
+    "name": "Summon Spectator (F&A Helm)",
+    "lvl": 5,
+    "schools": "(Conjuration/Summoning)",
+    "spheres": "Summoning, Protection ",
+    "range": "70 yards ",
+    "componenets": "V, S, M",
+    "duration": "Special ",
+    "casting": "1 round",
+    "aoe": "Special ",
+    "save": "None",
+    "description": "The annals of the church of Helm relate that in ancient tunes Helm, He of\nthe Unsleeping Eyes, created the ultimate guardian to assist his necessarily\nfallible human followers. This creature, known as a spectator, appeared as a\nlarge orb dominated by an unblinking central eye with four stalks sprouting\nfrom the top of the orb to watch in each of the cardinal directions. In a dark\ntune in the church’s distant history, the forces of evil gained the upper hand\nfor a while. During this bleak period, various gods of evil corrupted Helm’s\ncreations into the horrors known as beholders and their kin. Priests of Bane\nclaim this is so much hogwash; they believe that the Black Lord created the\neye tyrants as the ultimate rulers, and spectators are Helm’s poor attempt at\ncopying Bane’s magnificent creation. The truth is unknown, although\npriests of Helm are known to destroy beholders and their kin wherever possible,\nand the remaining priests of Bane (and Xvim) return the favor to\nspectators whenever possible.\nThis spell enables priests of Helm to summon nearly infallible guardians\nto assist in their ordained tasks. Summon spectator summons one of Helm’s\nspectator servitors from Mechanus to the Prime Material Plane to serve for\nup to 101 years in a specified task. (Spectators are detailed under the Beholder\nand Beholder-kin entry in the MONSTROUS MANUAL™ tome.) The\ntask must involve the guarding of some location or inanimate physical object,\nsuch as a portal, shrine, or a holy relic. (The scope of things a spectator\nsummoned by summon spectator will guard is broader than what one\nsummoned by the particular variant of the 7th-level wizard spell monster\nsummoning V that normally summons spectators will guard.) It allows no\none except the one who summoned it or another priest of Helm to enter\nthe location it is guarding or to use, borrow, or examine an item or treasure\nit watches over. It is not gullible and can fairly easily detect false claims to\nmembership in Helm’s priesthood by questioning such claimants telepathically\nabout details of the church’s rituals and beliefs.\nA summoned spectator does not abandon its post unless slain or blinded\nin all five eyes, in which case it automatically returns to Helm’s tower in\nMechanus. Its eyes regenerate in 24 hours, after which time it returns to its\npost. If the object is gone or the location breached when it returns (it can\nautomatically tell), it again leaves for Mechanus, never to return.\nThe material components for this spell are the priests holy symbol and a\nsteel gauntlet blessed in the name of Helm; the latter is consumed in the\ncasting."
   },
   {
     "done": true,
