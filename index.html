@@ -12,9 +12,127 @@
           content="Sortable, searchable list of most AD&D 2nd edition spells. Includes spells from Tome Of Magic, Spells and Magic, Wizards and Necromancers Handbook.">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.9b58bcdea796e2161029.css">
+
+    <style>
+        /* Helps native controls pick appropriate colors */
+        html { color-scheme: light dark; }
+
+        /* Manual toggle-driven dark mode (inversion-based) */
+        html.darkmode  {
+            filter: invert(1) hue-rotate(180deg);
+            background: #000;
+            min-height: 100vh;
+        }
+
+        /* Undo inversion for typical media so they look normal */
+        html.darkmode img,
+        html.darkmode picture,
+        html.darkmode video,
+        html.darkmode canvas,
+        html.darkmode svg {
+           /* filter: invert(1) hue-rotate(180deg); */
+        }
+
+        /* Tiny floating button */
+        #darkmodeBar {
+            position: sticky;
+            top: 0;
+            z-index: 999999;
+            display: flex;
+            justify-content: flex-end;
+            padding: 12px;
+            background: transparent;
+            pointer-events: none; /* lets clicks pass through except the button */
+        }
+
+        /* Circular button styling */
+        #darkmodeToggle {
+            pointer-events: auto;
+
+            /* Layout & Shape */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+
+            /* Visuals */
+            background: #ffffff;
+            color: #333; /* Dark icon color */
+            border: 1px solid rgba(0,0,0,0.1); /* Subtle border */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* Soft shadow */
+
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
+        }
+
+        /* Hover effects */
+        #darkmodeToggle:hover {
+            transform: translateX(2px); /* Lifts up slightly */
+            background: #f9f9f9;
+        }
+
+        /* Logic to swap icons */
+        .icon-sun { display: none; }
+        .icon-moon { display: block; }
+
+        /* When in dark mode:
+           1. Invert the button BACK to normal (so it doesn't look like a negative).
+           2. Swap the icons (Hide Moon, Show Sun).
+        */
+        html.darkmode #darkmodeToggle {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        html.darkmode .icon-sun { display: block; }
+        html.darkmode .icon-moon { display: none; }
+        /* When inverted, the button would invert too; double-invert it back */
+        html.darkmode #darkmodeToggle {
+            filter: invert(1) hue-rotate(180deg);
+        }
+    </style>
 </head>
 <body>
+<button id="darkmodeToggle" type="button" aria-label="Toggle dark mode">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+</button>
+
 <app-root></app-root>
+
+<script>
+    (function () {
+        const root = document.documentElement;
+        const btn = document.getElementById('darkmodeToggle');
+
+        const saved = localStorage.getItem('darkmode');
+        if (saved === '1') root.classList.add('darkmode');
+
+        const sync = () => btn.setAttribute('aria-pressed', root.classList.contains('darkmode') ? 'true' : 'false');
+        sync();
+
+        btn.addEventListener('click', () => {
+            root.classList.toggle('darkmode');
+            localStorage.setItem('darkmode', root.classList.contains('darkmode') ? '1' : '0');
+            sync();
+        });
+    })();
+</script>
+
 <script type="application/ld+json">
     {
         "@context": "https://schema.org",
