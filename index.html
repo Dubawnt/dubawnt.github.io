@@ -16,12 +16,24 @@
     <style>
         /* Helps native controls pick appropriate colors */
         html { color-scheme: light dark; }
+        /* fill body */
+        html, body{
+            /* Prevents the 'rubber band' effect */
+            overscroll-behavior-y: none;
+
+            /* Ensures no default gaps */
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
 
         /* Manual toggle-driven dark mode (inversion-based) */
         html.darkmode  {
             filter: invert(1) hue-rotate(180deg);
-            background: #000;
+            background: #ffffff;
             min-height: 100vh;
+            width: 100%;
         }
 
         /* Undo inversion for typical media so they look normal */
