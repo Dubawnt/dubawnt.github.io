@@ -442,25 +442,13 @@
 <main>
   <div class="top-toolbar">
     <select id="class-type-select">
-      <option value="priest">Priest</option>
+      <option value="priest" selected>Priest</option>
       <option value="wizard">Wizard</option>
     </select>
 
     <input type="text" id="search-input" placeholder="Search spells...">
 
-    <!-- Populated dynamically: up to Level 7 for Priest, Level 9 for Wizard -->
-    <select id="level-filter">
-      <option value="">All (Levels)</option>
-      <option value="1">Level 1</option>
-      <option value="2">Level 2</option>
-      <option value="3">Level 3</option>
-      <option value="4">Level 4</option>
-      <option value="5">Level 5</option>
-      <option value="6">Level 6</option>
-      <option value="7">Level 7</option>
-      <option value="8">Level 8</option>
-      <option value="9">Level 9</option>
-    </select>
+    <select id="level-filter"></select>
 
     <select id="school-filter">
       <option value="">Schools</option>
@@ -555,66 +543,75 @@
     return str.replace(/[()]/g, '').trim();
   };
 
+  // Extracts spheres cleanly, accounting for nested parentheses and typos
   function extractSpheres(sphereStr) {
     if (!sphereStr) return [];
-    return sphereStr
-            .replace(/Reversible|Sphere:|\(|\)/gi, '')
-            .split(',')
-            .map(s => s.trim())
-            .filter(Boolean);
+    const cleaned = sphereStr.replace(/Reversible|Sphere:/gi, '');
+    const tokens = cleaned.split(/[,/()]/).map(s => s.trim()).filter(Boolean);
+    const matched = [];
+
+    tokens.forEach(tok => {
+      const found = ALL_SPHERES.find(s => s.toLowerCase() === tok.toLowerCase());
+      if (found) {
+        matched.push(found);
+      } else {
+        ALL_SPHERES.forEach(s => {
+          if (tok.toLowerCase().includes(s.toLowerCase()) && !matched.includes(s)) {
+            matched.push(s);
+          }
+        });
+      }
+    });
+
+    return matched.length ? matched : (tokens.length ? tokens : []);
   }
 
-  // Robust field sanitizer to handle misaligned/OCR-pasted fields across datasets
+  // Safe Sanitizer that cleans pasted multiline content without touching valid spells
   function sanitizeSpell(raw) {
     const s = { ...raw };
 
-    let blob = [
-      s.components || '',
-      s.duration || '',
-      s.casting || '',
-      s.aoe || '',
-      s.save || '',
-      s.description || ''
-    ].join(' \n ');
+    // Standard cleanup of prefixes in fields
+    if (s.casting) s.casting = String(s.casting).replace(/^Casting Time:\s*/i, '').trim();
+    if (s.save) s.save = String(s.save).replace(/^Saving Throw:\s*/i, '').trim();
+    if (s.range) s.range = String(s.range).replace(/^(?:Reversible)?Range:\s*/i, '').replace(/Component.*$/i, '').trim();
 
-    const matchComp = blob.match(/(?:Components?:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Area of Effect:|Saving Throw:|$))/i);
-    const matchDur  = blob.match(/(?:Duration:\s*)([^\n\r]+?)(?=\s*(?:Casting Time:|Area of Effect:|Saving Throw:|Components?:|$))/i);
-    const matchCast = blob.match(/(?:Casting Time:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Area of Effect:|Saving Throw:|Components?:|$))/i);
-    const matchAoe  = blob.match(/(?:Area of Effect:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Saving Throw:|Components?:|$))/i);
-    const matchSave = blob.match(/(?:Saving Throw:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Area of Effect:|Components?:|$))/i);
+    // Check if fields suffered from multi-line paste overlap
+    const hasShift = (s.components && /Duration:|Casting Time:/i.test(s.components)) ||
+            (s.duration && /Area of Effect:|Saving Throw:/i.test(s.duration)) ||
+            (s.aoe && /Saving Throw:|This spell/i.test(s.aoe));
 
-    if (matchDur) s.duration = matchDur[1].trim();
-    if (matchCast) s.casting = matchCast[1].trim();
-    if (matchAoe) s.aoe = matchAoe[1].trim();
-    if (matchSave) s.save = matchSave[1].trim();
+    if (hasShift) {
+      const blob = [
+        s.components || '',
+        s.duration || '',
+        s.casting || '',
+        s.aoe || '',
+        s.save || '',
+        s.description || ''
+      ].join(' \n ');
 
-    if (matchComp) {
-      s.components = matchComp[1].trim();
-    } else if (s.components) {
-      s.components = s.components.split(/Duration:|Casting Time:|Area of Effect:/i)[0].trim();
+      const matchComp = blob.match(/(?:Components?:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Area of Effect:|Saving Throw:|$))/i);
+      const matchDur  = blob.match(/(?:Duration:\s*)([^\n\r]+?)(?=\s*(?:Casting Time:|Area of Effect:|Saving Throw:|Components?:|$))/i);
+      const matchCast = blob.match(/(?:Casting Time:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Area of Effect:|Saving Throw:|Components?:|$))/i);
+      const matchAoe  = blob.match(/(?:Area of Effect:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Saving Throw:|Components?:|$))/i);
+      const matchSave = blob.match(/(?:Saving Throw:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Area of Effect:|Components?:|$))/i);
+
+      if (matchComp) s.components = matchComp[1].trim();
+      if (matchDur)  s.duration = matchDur[1].trim();
+      if (matchCast) s.casting = matchCast[1].trim();
+      if (matchAoe)  s.aoe = matchAoe[1].trim();
+      if (matchSave) s.save = matchSave[1].trim();
+
+      const cleanField = (val, prefixRegex) => {
+        if (!val) return '';
+        return val.replace(prefixRegex, '').replace(/\s*(?:Casting Time|Area of Effect|Saving Throw):.*$/i, '').trim();
+      };
+
+      s.duration = cleanField(s.duration, /^(?:Duration:\s*)+/i);
+      s.casting  = cleanField(s.casting, /^(?:Casting Time:\s*)+/i);
+      s.aoe      = cleanField(s.aoe, /^(?:Area of Effect:\s*)+/i);
+      s.save     = cleanField(s.save, /^(?:Saving Throw:\s*)+/i);
     }
-
-    const cleanField = (val, prefixRegex) => {
-      if (!val) return '';
-      return val.replace(prefixRegex, '').replace(/\s*(?:Casting Time|Area of Effect|Saving Throw):.*$/i, '').trim();
-    };
-
-    s.duration = cleanField(s.duration, /^(?:Duration:\s*)+/i);
-    s.casting = cleanField(s.casting, /^(?:Casting Time:\s*)+/i);
-    s.aoe = cleanField(s.aoe, /^(?:Area of Effect:\s*)+/i);
-    s.save = cleanField(s.save, /^(?:Saving Throw:\s*)+/i);
-
-    let fullDesc = '';
-    if (s.aoe && s.aoe.length > 60 && !s.aoe.match(/\b(cube|radius|yds|ft|yards|feet|circle|special|caster)\b/i)) {
-      fullDesc += s.aoe + ' ';
-      s.aoe = 'Special';
-    }
-    if (s.save && s.save.length > 50 && !s.save.match(/\b(none|neg|special|1\/2|half)\b/i)) {
-      fullDesc += s.save + ' ';
-      s.save = 'None';
-    }
-    fullDesc += (s.description || '');
-    s.description = fullDesc.replace(/^(?:Saving Throw:\s*None\s*)+/i, '').trim();
 
     return s;
   }
@@ -639,7 +636,6 @@
     return matched.length ? matched.join(', ') : compStr;
   }
 
-  // Dynamic Level Filter Builder (Max 7 for Priest, Max 9 for Wizard)
   function populateLevelFilter() {
     const maxLevel = currentClass === 'priest' ? 7 : 9;
     const currentVal = levelFilter.value;
@@ -654,6 +650,34 @@
       levelFilter.value = currentVal;
     } else {
       levelFilter.value = '';
+    }
+  }
+
+  function populateSchools() {
+    const spells = currentClass === 'wizard' ? wizardSpells : priestSpells;
+    const schools = new Set();
+
+    spells.forEach(s => {
+      const clean = cleanSchools(s.schools);
+      clean.split(/[,/]/).forEach(item => {
+        const trimmed = item.trim();
+        if (trimmed && trimmed.toLowerCase() !== 'universal') {
+          schools.add(trimmed);
+        }
+      });
+    });
+
+    const currentSchool = schoolFilter.value;
+    let options = '<option value="">Schools</option>';
+    Array.from(schools).sort().forEach(s => {
+      options += `<option value="${s}">${s}</option>`;
+    });
+
+    schoolFilter.innerHTML = options;
+    if (schools.has(currentSchool)) {
+      schoolFilter.value = currentSchool;
+    } else {
+      schoolFilter.value = '';
     }
   }
 
@@ -708,28 +732,13 @@
       wizardSpells = rawWizard.map(sanitizeSpell);
       priestSpells = rawPriest.map(sanitizeSpell);
 
-      populateSchools();
       populateLevelFilter();
+      populateSchools();
       renderSphereGrid();
       render();
     } catch (err) {
       spellListEl.innerHTML = `<div class="status-msg">Failed to load JSON files. Serve over HTTP (e.g. npx serve or Live Server).</div>`;
     }
-  }
-
-  function populateSchools() {
-    const spells = currentClass === 'wizard' ? wizardSpells : priestSpells;
-    const schools = new Set();
-    spells.forEach(s => {
-      cleanSchools(s.schools).split(',').forEach(item => {
-        if (item.trim()) schools.add(item.trim());
-      });
-    });
-
-    const currentSchool = schoolFilter.value;
-    schoolFilter.innerHTML = '<option value="">Schools</option>' +
-            Array.from(schools).sort().map(s => `<option value="${s}">${s}</option>`).join('');
-    schoolFilter.value = schools.has(currentSchool) ? currentSchool : '';
   }
 
   function getFilteredSpells() {
@@ -746,7 +755,7 @@
     return base.filter(spell => {
       if (search && !spell.name.toLowerCase().includes(search)) return false;
       if (level && spell.lvl.toString() !== level) return false;
-      if (school && !cleanSchools(spell.schools).includes(school)) return false;
+      if (school && !cleanSchools(spell.schools).toLowerCase().includes(school.toLowerCase())) return false;
 
       const c = (spell.components || '').toUpperCase();
       const hasV = c.includes('V');
@@ -761,8 +770,9 @@
         const spellSpheres = extractSpheres(spell.spheres);
         if (spellSpheres.length === 0) return true;
 
-        const hasAccess = spellSpheres.some(sphere => {
-          const access = sphereAccess[sphere] || 'none';
+        const hasAccess = spellSpheres.some(sp => {
+          const matchedKey = ALL_SPHERES.find(k => k.toLowerCase() === sp.toLowerCase());
+          const access = matchedKey ? (sphereAccess[matchedKey] || 'none') : 'major';
           if (access === 'major') return true;
           if (access === 'minor' && spell.lvl <= 3) return true;
           return false;
@@ -821,11 +831,12 @@
     if (currentClass === 'wizard') {
       toggleSphereBtn.style.display = 'none';
       spherePanel.classList.remove('open');
+      toggleSphereBtn.classList.remove('active');
     } else {
       toggleSphereBtn.style.display = 'flex';
     }
-    populateSchools();
     populateLevelFilter();
+    populateSchools();
     render();
   });
 
