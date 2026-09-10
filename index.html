@@ -448,13 +448,8 @@
 
     <input type="text" id="search-input" placeholder="Search spells...">
 
-    <select id="level-filter">
-      <option value="">All (Levels)</option>
-      <option value="1">Level 1</option>
-      <option value="2">Level 2</option>
-      <option value="3">Level 3</option>
-      <option value="4">Level 4</option>
-    </select>
+    <!-- Populated dynamically: up to Level 7 for Priest, Level 9 for Wizard -->
+    <select id="level-filter"></select>
 
     <select id="school-filter">
       <option value="">Schools</option>
@@ -487,8 +482,7 @@
         <button type="button" class="bulk-btn none" id="bulk-none">None</button>
       </div>
     </div>
-    <div class="sphere-grid" id="sphere-grid">
-    </div>
+    <div class="sphere-grid" id="sphere-grid"></div>
   </div>
 
   <div class="spell-scroll-container" id="spell-list">
@@ -559,6 +553,61 @@
             .filter(Boolean);
   }
 
+  // Robust field sanitizer to handle misaligned/OCR-pasted fields across datasets
+  function sanitizeSpell(raw) {
+    const s = { ...raw };
+
+    let blob = [
+      s.components || '',
+      s.duration || '',
+      s.casting || '',
+      s.aoe || '',
+      s.save || '',
+      s.description || ''
+    ].join(' \n ');
+
+    const matchComp = blob.match(/(?:Components?:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Area of Effect:|Saving Throw:|$))/i);
+    const matchDur  = blob.match(/(?:Duration:\s*)([^\n\r]+?)(?=\s*(?:Casting Time:|Area of Effect:|Saving Throw:|Components?:|$))/i);
+    const matchCast = blob.match(/(?:Casting Time:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Area of Effect:|Saving Throw:|Components?:|$))/i);
+    const matchAoe  = blob.match(/(?:Area of Effect:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Saving Throw:|Components?:|$))/i);
+    const matchSave = blob.match(/(?:Saving Throw:\s*)([^\n\r]+?)(?=\s*(?:Duration:|Casting Time:|Area of Effect:|Components?:|$))/i);
+
+    if (matchDur) s.duration = matchDur[1].trim();
+    if (matchCast) s.casting = matchCast[1].trim();
+    if (matchAoe) s.aoe = matchAoe[1].trim();
+    if (matchSave) s.save = matchSave[1].trim();
+
+    if (matchComp) {
+      s.components = matchComp[1].trim();
+    } else if (s.components) {
+      s.components = s.components.split(/Duration:|Casting Time:|Area of Effect:/i)[0].trim();
+    }
+
+    const cleanField = (val, prefixRegex) => {
+      if (!val) return '';
+      return val.replace(prefixRegex, '').replace(/\s*(?:Casting Time|Area of Effect|Saving Throw):.*$/i, '').trim();
+    };
+
+    s.duration = cleanField(s.duration, /^(?:Duration:\s*)+/i);
+    s.casting = cleanField(s.casting, /^(?:Casting Time:\s*)+/i);
+    s.aoe = cleanField(s.aoe, /^(?:Area of Effect:\s*)+/i);
+    s.save = cleanField(s.save, /^(?:Saving Throw:\s*)+/i);
+
+    let fullDesc = '';
+    if (s.aoe && s.aoe.length > 60 && !s.aoe.match(/\b(cube|radius|yds|ft|yards|feet|circle|special|caster)\b/i)) {
+      fullDesc += s.aoe + ' ';
+      s.aoe = 'Special';
+    }
+    if (s.save && s.save.length > 50 && !s.save.match(/\b(none|neg|special|1\/2|half)\b/i)) {
+      fullDesc += s.save + ' ';
+      s.save = 'None';
+    }
+    fullDesc += (s.description || '');
+    s.description = fullDesc.replace(/^(?:Saving Throw:\s*None\s*)+/i, '').trim();
+
+    return s;
+  }
+
   function formatBadgeComponents(compStr) {
     if (!compStr) return 'V, S';
     const matched = [];
@@ -566,31 +615,50 @@
     if (upper.includes('V')) matched.push('V');
     if (upper.includes('S')) matched.push('S');
     if (upper.includes('M')) matched.push('M');
-    return matched.length ? matched.join(', ') : compStr.slice(0, 8);
+    return matched.length ? matched.join(', ') : 'V, S';
   }
 
   function formatStatComponents(compStr) {
     if (!compStr) return 'V, S';
-    return compStr
-            .replace(/([VSM])Duration/gi, '$1, Duration')
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/,\s*,/g, ',')
-            .trim();
+    const upper = compStr.toUpperCase();
+    const matched = [];
+    if (upper.includes('V')) matched.push('V');
+    if (upper.includes('S')) matched.push('S');
+    if (upper.includes('M')) matched.push('M');
+    return matched.length ? matched.join(', ') : compStr;
+  }
+
+  // Dynamic Level Filter Builder (Max 7 for Priest, Max 9 for Wizard)
+  function populateLevelFilter() {
+    const maxLevel = currentClass === 'priest' ? 7 : 9;
+    const currentVal = levelFilter.value;
+
+    let html = '<option value="">All (Levels)</option>';
+    for (let i = 1; i <= maxLevel; i++) {
+      html += `<option value="${i}">Level ${i}</option>`;
+    }
+    levelFilter.innerHTML = html;
+
+    if (currentVal && parseInt(currentVal) <= maxLevel) {
+      levelFilter.value = currentVal;
+    } else {
+      levelFilter.value = '';
+    }
   }
 
   function renderSphereGrid() {
     sphereGrid.innerHTML = ALL_SPHERES.map(sphere => {
       const state = sphereAccess[sphere] || 'major';
       return `
-          <div class="sphere-control-card">
-            <span class="sphere-control-label" title="${sphere}">${sphere}</span>
-            <div class="tri-toggle" data-sphere="${sphere}">
-              <button type="button" class="tri-btn major ${state === 'major' ? 'active' : ''}" data-val="major">Maj</button>
-              <button type="button" class="tri-btn minor ${state === 'minor' ? 'active' : ''}" data-val="minor">Min</button>
-              <button type="button" class="tri-btn none ${state === 'none' ? 'active' : ''}" data-val="none">Off</button>
-            </div>
+        <div class="sphere-control-card">
+          <span class="sphere-control-label" title="${sphere}">${sphere}</span>
+          <div class="tri-toggle" data-sphere="${sphere}">
+            <button type="button" class="tri-btn major ${state === 'major' ? 'active' : ''}" data-val="major">Maj</button>
+            <button type="button" class="tri-btn minor ${state === 'minor' ? 'active' : ''}" data-val="minor">Min</button>
+            <button type="button" class="tri-btn none ${state === 'none' ? 'active' : ''}" data-val="none">Off</button>
           </div>
-        `;
+        </div>
+      `;
     }).join('');
 
     sphereGrid.querySelectorAll('.tri-btn').forEach(btn => {
@@ -623,9 +691,14 @@
         fetch('WizardSpells.json'),
         fetch('PriestSpells.json')
       ]);
-      wizardSpells = await wRes.json();
-      priestSpells = await pRes.json();
+      const rawWizard = await wRes.json();
+      const rawPriest = await pRes.json();
+
+      wizardSpells = rawWizard.map(sanitizeSpell);
+      priestSpells = rawPriest.map(sanitizeSpell);
+
       populateSchools();
+      populateLevelFilter();
       renderSphereGrid();
       render();
     } catch (err) {
@@ -705,31 +778,31 @@
     }
 
     spellListEl.innerHTML = spells.map((spell, index) => `
-        <details class="spell-card">
-          <summary class="spell-summary">
-            <div class="spell-title-group">
-              <span class="spell-level">Lvl ${spell.lvl}</span>
-              <span class="spell-name">${index + 1}. ${spell.name}</span>
-            </div>
-            <div class="spell-badges">
-              <span class="badge">${cleanSchools(spell.schools)}</span>
-              ${spell.spheres ? `<span class="badge badge-sphere">${spell.spheres.replace(/Reversible|Sphere:/gi, '').trim()}</span>` : ''}
-              <span class="badge">${formatBadgeComponents(spell.components)}</span>
-            </div>
-          </summary>
-          <div class="spell-content">
-            <div class="spell-stats-grid">
-              <div class="stat-row"><strong>Range</strong>${spell.range || '0'}</div>
-              <div class="stat-row"><strong>Components</strong>${formatStatComponents(spell.components)}</div>
-              <div class="stat-row"><strong>Duration</strong>${spell.duration || 'Instantaneous'}</div>
-              <div class="stat-row"><strong>Casting Time</strong>${spell.casting || '1'}</div>
-              <div class="stat-row"><strong>Area of Effect</strong>${spell.aoe || 'Special'}</div>
-              <div class="stat-row"><strong>Saving Throw</strong>${spell.save || 'None'}</div>
-            </div>
-            <div class="spell-description">${spell.description || 'No description available.'}</div>
+      <details class="spell-card">
+        <summary class="spell-summary">
+          <div class="spell-title-group">
+            <span class="spell-level">Lvl ${spell.lvl}</span>
+            <span class="spell-name">${index + 1}. ${spell.name}</span>
           </div>
-        </details>
-      `).join('');
+          <div class="spell-badges">
+            <span class="badge">${cleanSchools(spell.schools)}</span>
+            ${spell.spheres ? `<span class="badge badge-sphere">${spell.spheres.replace(/Reversible|Sphere:/gi, '').trim()}</span>` : ''}
+            <span class="badge">${formatBadgeComponents(spell.components)}</span>
+          </div>
+        </summary>
+        <div class="spell-content">
+          <div class="spell-stats-grid">
+            <div class="stat-row"><strong>Range</strong>${spell.range || '0'}</div>
+            <div class="stat-row"><strong>Components</strong>${formatStatComponents(spell.components)}</div>
+            <div class="stat-row"><strong>Duration</strong>${spell.duration || 'Instantaneous'}</div>
+            <div class="stat-row"><strong>Casting Time</strong>${spell.casting || '1'}</div>
+            <div class="stat-row"><strong>Area of Effect</strong>${spell.aoe || 'Special'}</div>
+            <div class="stat-row"><strong>Saving Throw</strong>${spell.save || 'None'}</div>
+          </div>
+          <div class="spell-description">${spell.description || 'No description available.'}</div>
+        </div>
+      </details>
+    `).join('');
   }
 
   classSelect.addEventListener('change', (e) => {
@@ -741,6 +814,7 @@
       toggleSphereBtn.style.display = 'flex';
     }
     populateSchools();
+    populateLevelFilter();
     render();
   });
 
