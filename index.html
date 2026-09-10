@@ -1,161 +1,760 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Spells for AD&#38;D 2nd Edition</title>
-    <base href="./">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="title" content="">
-    <meta name="keywords"
-          content="2e Spells,2nd Edition Spells,2e Spell list,Dungeons,Dragons,Dungeons and Dragons,Spells,Magic,Spell list,D&D,AD&D,AD&D Spells,AD&D 2nd Edition,2nd Edition,2nd Edition Spells,Wizard,Priest,Wizard Spells,Priest Spells">
-    <meta name="description"
-          content="Sortable, searchable list of most AD&D 2nd edition spells. Includes spells from Tome Of Magic, Spells and Magic, Wizards and Necromancers Handbook.">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="styles.9b58bcdea796e2161029.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AD&D 2nd Edition Spells</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #131b2e;
+      --panel-bg: #0f1626;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border: #222f4c;
+      --accent: #3b82f6;
+      --tag-bg: #1e293b;
+      --tag-text: #93c5fd;
+      --badge-priest: #34d399;
+      --badge-priest-bg: #064e3b;
+      --major-color: #f87171;
+      --minor-color: #22c55e;
+      --none-color: #64748b;
+      --toggle-bg: #334155;
+      --scroll-track: #0b0f19;
+      --scroll-thumb: #334155;
+    }
 
-    <style>
-        /* Helps native controls pick appropriate colors */
-        html { color-scheme: light dark; }
-        /* fill body */
-        html, body{
-            /* Prevents the 'rubber band' effect */
-            overscroll-behavior-y: none;
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --panel-bg: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+      --accent: #2563eb;
+      --tag-bg: #e0e7ff;
+      --tag-text: #3730a3;
+      --badge-priest: #047857;
+      --badge-priest-bg: #d1fae5;
+      --major-color: #ef4444;
+      --minor-color: #16a34a;
+      --none-color: #94a3b8;
+      --toggle-bg: #cbd5e1;
+      --scroll-track: #f8fafc;
+      --scroll-thumb: #cbd5e1;
+    }
 
-            /* Ensures no default gaps */
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
 
-        /* Manual toggle-driven dark mode (inversion-based) */
-        html.darkmode  {
-            filter: invert(1) hue-rotate(180deg);
-            background: #ffffff;
-            min-height: 100vh;
-            width: 100%;
-        }
+    header {
+      padding: 0.75rem 1.5rem;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
 
-        /* Undo inversion for typical media so they look normal */
-        html.darkmode img,
-        html.darkmode picture,
-        html.darkmode video,
-        html.darkmode canvas,
-        html.darkmode svg {
-           /* filter: invert(1) hue-rotate(180deg); */
-        }
+    .header-title h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
 
-        /* Tiny floating button */
-        #darkmodeBar {
-            position: sticky;
-            top: 0;
-            z-index: 999999;
-            display: flex;
-            justify-content: flex-end;
-            padding: 12px;
-            background: transparent;
-            pointer-events: none; /* lets clicks pass through except the button */
-        }
+    .dark-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
 
-        /* Circular button styling */
-        #darkmodeToggle {
-            pointer-events: auto;
+    main {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1.5rem;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      min-height: 0;
+    }
 
-            /* Layout & Shape */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+    .top-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.85rem;
+      flex-shrink: 0;
+    }
 
-            /* Visuals */
-            background: #ffffff;
-            color: #333; /* Dark icon color */
-            border: 1px solid rgba(0,0,0,0.1); /* Subtle border */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* Soft shadow */
+    .top-toolbar select,
+    .top-toolbar input[type="text"] {
+      background-color: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
+      outline: none;
+      font-size: 0.85rem;
+      height: 36px;
+    }
 
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
-        }
+    .top-toolbar input[type="text"] {
+      min-width: 180px;
+      flex: 1 1 180px;
+    }
 
-        /* Hover effects */
-        #darkmodeToggle:hover {
-            transform: translateX(2px); /* Lifts up slightly */
-            background: #f9f9f9;
-        }
+    .sphere-toggle-btn {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 0 0.9rem;
+      border-radius: 6px;
+      height: 36px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
 
-        /* Logic to swap icons */
-        .icon-sun { display: none; }
-        .icon-moon { display: block; }
+    .sphere-toggle-btn.active {
+      background: #0369a1;
+      outline: 2px solid var(--accent);
+    }
 
-        /* When in dark mode:
-           1. Invert the button BACK to normal (so it doesn't look like a negative).
-           2. Swap the icons (Hide Moon, Show Sun).
-        */
-        html.darkmode #darkmodeToggle {
-            filter: invert(1) hue-rotate(180deg);
-        }
+    .component-filters {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 0 0.8rem;
+      height: 36px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      user-select: none;
+    }
 
-        html.darkmode .icon-sun { display: block; }
-        html.darkmode .icon-moon { display: none; }
-        /* When inverted, the button would invert too; double-invert it back */
-        html.darkmode #darkmodeToggle {
-            filter: invert(1) hue-rotate(180deg);
-        }
-    </style>
+    .comp-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .comp-item input {
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .sphere-panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .sphere-panel.open {
+      display: block;
+    }
+
+    .panel-header-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .panel-header-row span {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .bulk-buttons {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .bulk-btn {
+      border: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+    }
+
+    .bulk-btn.major { background: var(--major-color); }
+    .bulk-btn.minor { background: var(--minor-color); }
+    .bulk-btn.none { background: var(--none-color); }
+
+    .sphere-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.75rem 0.5rem;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .sphere-control-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .sphere-control-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tri-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      background: var(--toggle-bg);
+      border-radius: 4px;
+      padding: 2px;
+      height: 24px;
+      user-select: none;
+    }
+
+    .tri-btn {
+      font-size: 0.65rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tri-btn.active.major {
+      background: var(--major-color);
+      color: #ffffff;
+    }
+
+    .tri-btn.active.minor {
+      background: var(--minor-color);
+      color: #ffffff;
+    }
+
+    .tri-btn.active.none {
+      background: var(--none-color);
+      color: #ffffff;
+    }
+
+    .spell-scroll-container {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      min-height: 0;
+    }
+
+    .spell-scroll-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    .spell-scroll-container::-webkit-scrollbar-track {
+      background: var(--scroll-track);
+    }
+    .spell-scroll-container::-webkit-scrollbar-thumb {
+      background: var(--scroll-thumb);
+      border-radius: 4px;
+    }
+
+    details.spell-card {
+      display: block;
+      width: 100%;
+      flex-shrink: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      height: auto;
+      overflow: visible;
+    }
+
+    details.spell-card[open] {
+      border-color: var(--accent);
+    }
+
+    summary.spell-summary {
+      padding: 0.75rem 1rem;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      min-height: 48px;
+      gap: 0.75rem;
+    }
+
+    summary.spell-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .spell-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex: 1 1 auto;
+      min-width: 220px;
+    }
+
+    .spell-level {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .spell-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+
+    .spell-badges {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      flex-shrink: 1;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .badge-sphere {
+      background: var(--badge-priest-bg);
+      color: var(--badge-priest);
+      border: none;
+      font-weight: 500;
+    }
+
+    .spell-content {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: block;
+      height: auto;
+      overflow: visible;
+    }
+
+    .spell-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.5rem;
+      background: var(--bg);
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.85rem;
+    }
+
+    .stat-row {
+      font-size: 0.82rem;
+      word-break: break-word;
+    }
+
+    .stat-row strong {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    .spell-description {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .status-msg {
+      margin: auto;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 2rem;
+    }
+  </style>
 </head>
-<body>
-<button id="darkmodeToggle" type="button" aria-label="Toggle dark mode">
-    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-    </svg>
-</button>
+<body data-theme="dark">
 
-<app-root></app-root>
+<header>
+  <div class="header-title">
+    <h1>AD&D 2nd Edition Spells</h1>
+  </div>
+  <button class="dark-toggle-btn" id="theme-toggle">☀️ Light Mode</button>
+</header>
+
+<main>
+  <div class="top-toolbar">
+    <select id="class-type-select">
+      <option value="priest">Priest</option>
+      <option value="wizard">Wizard</option>
+    </select>
+
+    <input type="text" id="search-input" placeholder="Search spells...">
+
+    <select id="level-filter">
+      <option value="">All (Levels)</option>
+      <option value="1">Level 1</option>
+      <option value="2">Level 2</option>
+      <option value="3">Level 3</option>
+      <option value="4">Level 4</option>
+    </select>
+
+    <select id="school-filter">
+      <option value="">Schools</option>
+    </select>
+
+    <button type="button" class="sphere-toggle-btn" id="toggle-sphere-menu">
+      Sphere Filters
+    </button>
+
+    <div class="component-filters">
+      <label class="comp-item"><input type="checkbox" id="comp-v" checked> V</label>
+      <label class="comp-item"><input type="checkbox" id="comp-s" checked> S</label>
+      <label class="comp-item"><input type="checkbox" id="comp-m" checked> M</label>
+    </div>
+
+    <select id="sort-by" style="margin-left: auto;">
+      <option value="lvl-asc">Level (Low-High)</option>
+      <option value="lvl-desc">Level (High-Low)</option>
+      <option value="name-asc">Name (A-Z)</option>
+      <option value="name-desc">Name (Z-A)</option>
+    </select>
+  </div>
+
+  <div class="sphere-panel" id="sphere-panel">
+    <div class="panel-header-row">
+      <span>SET EVERYTHING</span>
+      <div class="bulk-buttons">
+        <button type="button" class="bulk-btn major" id="bulk-major">Major</button>
+        <button type="button" class="bulk-btn minor" id="bulk-minor">Minor</button>
+        <button type="button" class="bulk-btn none" id="bulk-none">None</button>
+      </div>
+    </div>
+    <div class="sphere-grid" id="sphere-grid">
+    </div>
+  </div>
+
+  <div class="spell-scroll-container" id="spell-list">
+    <div class="status-msg">Loading spells...</div>
+  </div>
+</main>
 
 <script>
-    (function () {
-        const root = document.documentElement;
-        const btn = document.getElementById('darkmodeToggle');
+  const ALL_SPHERES = [
+    "All", "Animal", "Astral", "Chaos", "Charm", "Combat", "Creation",
+    "Divination", "Elemental Air", "Elemental Earth", "Elemental Fire",
+    "Elemental Water", "Guardian", "Healing", "Law", "Necromantic",
+    "Numbers", "Plant", "Protection", "Summoning", "Sun", "Thought",
+    "Time", "Travelers", "War", "Wards", "Weather"
+  ];
 
-        const saved = localStorage.getItem('darkmode');
-        if (saved === '1') root.classList.add('darkmode');
+  let currentClass = 'priest';
+  let wizardSpells = [];
+  let priestSpells = [];
+  const sphereAccess = {};
 
-        const sync = () => btn.setAttribute('aria-pressed', root.classList.contains('darkmode') ? 'true' : 'false');
-        sync();
+  ALL_SPHERES.forEach(s => sphereAccess[s] = 'major');
 
-        btn.addEventListener('click', () => {
-            root.classList.toggle('darkmode');
-            localStorage.setItem('darkmode', root.classList.contains('darkmode') ? '1' : '0');
-            sync();
-        });
-    })();
-</script>
+  const classSelect = document.getElementById('class-type-select');
+  const searchInput = document.getElementById('search-input');
+  const levelFilter = document.getElementById('level-filter');
+  const schoolFilter = document.getElementById('school-filter');
+  const sortBy = document.getElementById('sort-by');
+  const toggleSphereBtn = document.getElementById('toggle-sphere-menu');
+  const spherePanel = document.getElementById('sphere-panel');
+  const sphereGrid = document.getElementById('sphere-grid');
+  const spellListEl = document.getElementById('spell-list');
+  const themeToggleBtn = document.getElementById('theme-toggle');
 
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "AD&D2e Spell list",
-        "description": "Sortable, searchable list of most AD&D 2nd edition spells. Includes spells from Tome Of Magic, Spells and Magic, Wizards Handbook and Necromancers Handbook"
+  const compV = document.getElementById('comp-v');
+  const compS = document.getElementById('comp-s');
+  const compM = document.getElementById('comp-m');
+
+  const initTheme = () => {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', saved);
+    updateThemeBtn(saved);
+  };
+
+  const updateThemeBtn = (theme) => {
+    themeToggleBtn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+  };
+
+  themeToggleBtn.addEventListener('click', () => {
+    const cur = document.body.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.body.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateThemeBtn(next);
+  });
+
+  const cleanSchools = (str) => {
+    if (!str) return 'Universal';
+    return str.replace(/[()]/g, '').trim();
+  };
+
+  function extractSpheres(sphereStr) {
+    if (!sphereStr) return [];
+    return sphereStr
+            .replace(/Reversible|Sphere:|\(|\)/gi, '')
+            .split(',')
+            .map(s => s.trim())
+            .filter(Boolean);
+  }
+
+  function formatBadgeComponents(compStr) {
+    if (!compStr) return 'V, S';
+    const matched = [];
+    const upper = compStr.toUpperCase();
+    if (upper.includes('V')) matched.push('V');
+    if (upper.includes('S')) matched.push('S');
+    if (upper.includes('M')) matched.push('M');
+    return matched.length ? matched.join(', ') : compStr.slice(0, 8);
+  }
+
+  function formatStatComponents(compStr) {
+    if (!compStr) return 'V, S';
+    return compStr
+            .replace(/([VSM])Duration/gi, '$1, Duration')
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .replace(/,\s*,/g, ',')
+            .trim();
+  }
+
+  function renderSphereGrid() {
+    sphereGrid.innerHTML = ALL_SPHERES.map(sphere => {
+      const state = sphereAccess[sphere] || 'major';
+      return `
+          <div class="sphere-control-card">
+            <span class="sphere-control-label" title="${sphere}">${sphere}</span>
+            <div class="tri-toggle" data-sphere="${sphere}">
+              <button type="button" class="tri-btn major ${state === 'major' ? 'active' : ''}" data-val="major">Maj</button>
+              <button type="button" class="tri-btn minor ${state === 'minor' ? 'active' : ''}" data-val="minor">Min</button>
+              <button type="button" class="tri-btn none ${state === 'none' ? 'active' : ''}" data-val="none">Off</button>
+            </div>
+          </div>
+        `;
+    }).join('');
+
+    sphereGrid.querySelectorAll('.tri-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tri-toggle');
+        const sphere = parent.dataset.sphere;
+        const val = e.target.dataset.val;
+
+        sphereAccess[sphere] = val;
+        parent.querySelectorAll('.tri-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render();
+      });
+    });
+  }
+
+  document.getElementById('bulk-major').addEventListener('click', () => setAllSpheres('major'));
+  document.getElementById('bulk-minor').addEventListener('click', () => setAllSpheres('minor'));
+  document.getElementById('bulk-none').addEventListener('click', () => setAllSpheres('none'));
+
+  function setAllSpheres(val) {
+    ALL_SPHERES.forEach(s => sphereAccess[s] = val);
+    renderSphereGrid();
+    render();
+  }
+
+  async function loadData() {
+    try {
+      const [wRes, pRes] = await Promise.all([
+        fetch('WizardSpells.json'),
+        fetch('PriestSpells.json')
+      ]);
+      wizardSpells = await wRes.json();
+      priestSpells = await pRes.json();
+      populateSchools();
+      renderSphereGrid();
+      render();
+    } catch (err) {
+      spellListEl.innerHTML = `<div class="status-msg">Failed to load JSON files. Serve over HTTP (e.g. npx serve or Live Server).</div>`;
     }
+  }
+
+  function populateSchools() {
+    const spells = currentClass === 'wizard' ? wizardSpells : priestSpells;
+    const schools = new Set();
+    spells.forEach(s => {
+      cleanSchools(s.schools).split(',').forEach(item => {
+        if (item.trim()) schools.add(item.trim());
+      });
+    });
+
+    const currentSchool = schoolFilter.value;
+    schoolFilter.innerHTML = '<option value="">Schools</option>' +
+            Array.from(schools).sort().map(s => `<option value="${s}">${s}</option>`).join('');
+    schoolFilter.value = schools.has(currentSchool) ? currentSchool : '';
+  }
+
+  function getFilteredSpells() {
+    const base = currentClass === 'wizard' ? wizardSpells : priestSpells;
+    const search = searchInput.value.toLowerCase();
+    const level = levelFilter.value;
+    const school = schoolFilter.value;
+    const sort = sortBy.value;
+
+    const allowV = compV.checked;
+    const allowS = compS.checked;
+    const allowM = compM.checked;
+
+    return base.filter(spell => {
+      if (search && !spell.name.toLowerCase().includes(search)) return false;
+      if (level && spell.lvl.toString() !== level) return false;
+      if (school && !cleanSchools(spell.schools).includes(school)) return false;
+
+      const c = (spell.components || '').toUpperCase();
+      const hasV = c.includes('V');
+      const hasS = c.includes('S');
+      const hasM = c.includes('M');
+
+      if (hasV && !allowV) return false;
+      if (hasS && !allowS) return false;
+      if (hasM && !allowM) return false;
+
+      if (currentClass === 'priest') {
+        const spellSpheres = extractSpheres(spell.spheres);
+        if (spellSpheres.length === 0) return true;
+
+        const hasAccess = spellSpheres.some(sphere => {
+          const access = sphereAccess[sphere] || 'none';
+          if (access === 'major') return true;
+          if (access === 'minor' && spell.lvl <= 3) return true;
+          return false;
+        });
+
+        if (!hasAccess) return false;
+      }
+
+      return true;
+    }).sort((a, b) => {
+      if (sort === 'lvl-asc') return a.lvl - b.lvl || a.name.localeCompare(b.name);
+      if (sort === 'lvl-desc') return b.lvl - a.lvl || a.name.localeCompare(b.name);
+      if (sort === 'name-asc') return a.name.localeCompare(b.name);
+      if (sort === 'name-desc') return b.name.localeCompare(a.name);
+      return 0;
+    });
+  }
+
+  function render() {
+    const spells = getFilteredSpells();
+    if (!spells.length) {
+      spellListEl.innerHTML = `<div class="status-msg">No spells match the current filters.</div>`;
+      return;
+    }
+
+    spellListEl.innerHTML = spells.map((spell, index) => `
+        <details class="spell-card">
+          <summary class="spell-summary">
+            <div class="spell-title-group">
+              <span class="spell-level">Lvl ${spell.lvl}</span>
+              <span class="spell-name">${index + 1}. ${spell.name}</span>
+            </div>
+            <div class="spell-badges">
+              <span class="badge">${cleanSchools(spell.schools)}</span>
+              ${spell.spheres ? `<span class="badge badge-sphere">${spell.spheres.replace(/Reversible|Sphere:/gi, '').trim()}</span>` : ''}
+              <span class="badge">${formatBadgeComponents(spell.components)}</span>
+            </div>
+          </summary>
+          <div class="spell-content">
+            <div class="spell-stats-grid">
+              <div class="stat-row"><strong>Range</strong>${spell.range || '0'}</div>
+              <div class="stat-row"><strong>Components</strong>${formatStatComponents(spell.components)}</div>
+              <div class="stat-row"><strong>Duration</strong>${spell.duration || 'Instantaneous'}</div>
+              <div class="stat-row"><strong>Casting Time</strong>${spell.casting || '1'}</div>
+              <div class="stat-row"><strong>Area of Effect</strong>${spell.aoe || 'Special'}</div>
+              <div class="stat-row"><strong>Saving Throw</strong>${spell.save || 'None'}</div>
+            </div>
+            <div class="spell-description">${spell.description || 'No description available.'}</div>
+          </div>
+        </details>
+      `).join('');
+  }
+
+  classSelect.addEventListener('change', (e) => {
+    currentClass = e.target.value;
+    if (currentClass === 'wizard') {
+      toggleSphereBtn.style.display = 'none';
+      spherePanel.classList.remove('open');
+    } else {
+      toggleSphereBtn.style.display = 'flex';
+    }
+    populateSchools();
+    render();
+  });
+
+  toggleSphereBtn.addEventListener('click', () => {
+    spherePanel.classList.toggle('open');
+    toggleSphereBtn.classList.toggle('active');
+  });
+
+  [searchInput, levelFilter, schoolFilter, sortBy, compV, compS, compM].forEach(el => {
+    el.addEventListener('input', render);
+  });
+
+  initTheme();
+  loadData();
 </script>
-<script src="runtime-es2015.1eba213af0b233498d9d.js" type="module"></script>
-<script src="polyfills-es2015.690002c25ea8557bb4b0.js" type="module"></script>
-<script src="scripts.e42098c4e21c9ffc063f.js" defer></script>
-<script src="main-es2015.e1c9890b142bc692c610.js" type="module"></script>
 </body>
 </html>
