@@ -677,7 +677,7 @@
   },
   {
     "done": true,
-    "name": "Nahal's Reckless Dweomer*",
+    "name": "Nahal's Reckless Dweomer",
     "lvl": 1,
     "schools": "(Invocation/Evocation)",
     "range": "Special",
@@ -690,7 +690,7 @@
   },
   {
     "done": true,
-    "name": "Patternweave*",
+    "name": "Patternweave",
     "lvl": 1,
     "schools": "(Divination)",
     "range": "10 yards",
@@ -1483,7 +1483,7 @@
   },
   {
     "done": true,
-    "name": "Chaos Shield*",
+    "name": "Chaos Shield",
     "lvl": 2,
     "schools": "(Abjuration)",
     "range": "0 ",
@@ -1496,7 +1496,7 @@
   },
   {
     "done": true,
-    "name": "Hornung's Baneful Deflector*",
+    "name": "Hornung's Baneful Deflector",
     "lvl": 2,
     "schools": "(Evocation)",
     "range": "Touch ",
@@ -1535,7 +1535,7 @@
   },
   {
     "done": true,
-    "name": "Nahal's Nonsensical Nullifier*",
+    "name": "Nahal's Nonsensical Nullifier",
     "lvl": 2,
     "schools": "(Abjuration)",
     "range": "Touch ",
@@ -2302,7 +2302,7 @@
   },
   {
     "done": true,
-    "name": "Alternate Reality*",
+    "name": "Alternate Reality",
     "lvl": 3,
     "schools": "(Alteration)",
     "range": "0 ",
@@ -2354,7 +2354,7 @@
   },
   {
     "done": true,
-    "name": "Fool's Speech*",
+    "name": "Fool's Speech",
     "lvl": 3,
     "schools": "(Alteration)",
     "range": "Touch ",
@@ -3329,7 +3329,7 @@
   },
   {
     "done": true,
-    "name": "There/Not There*",
+    "name": "There/Not There",
     "lvl": 4,
     "schools": "(Evocation)",
     "range": "30 yards ",
@@ -4187,7 +4187,7 @@
   },
   {
     "done": true,
-    "name": "Vortex*",
+    "name": "Vortex",
     "lvl": 5,
     "schools": "(Evocation)",
     "range": "30 yards ",
@@ -4200,7 +4200,7 @@
   },
   {
     "done": true,
-    "name": "Waveform*",
+    "name": "Waveform",
     "lvl": 5,
     "schools": "(Alteration)",
     "range": "40 yards ",
@@ -5058,7 +5058,7 @@
   },
   {
     "done": true,
-    "name": "Wildstrike*",
+    "name": "Wildstrike",
     "lvl": 6,
     "schools": "(Conjuration/Summoning)",
     "range": "30 yards",
@@ -5630,7 +5630,7 @@
   },
   {
     "done": true,
-    "name": "Hornung's Surge Selector*",
+    "name": "Hornung's Surge Selector",
     "lvl": 7,
     "schools": "(Alteration)",
     "range": "0 ",
@@ -5682,7 +5682,7 @@
   },
   {
     "done": true,
-    "name": "Spell Shape*",
+    "name": "Spell Shape",
     "lvl": 7,
     "schools": "(Alteration)",
     "range": "0 ",
@@ -6137,7 +6137,7 @@
   },
   {
     "done": true,
-    "name": "Hornung's Random Dispatcher*",
+    "name": "Hornung's Random Dispatcher",
     "lvl": 8,
     "schools": "(Abjuration)",
     "range": "30 yards ",
@@ -6189,7 +6189,7 @@
   },
   {
     "done": true,
-    "name": "Wildzone*",
+    "name": "Wildzone",
     "lvl": 8,
     "schools": "(Conjuration/Summoning) ",
     "range": "0",
@@ -6553,7 +6553,7 @@
   },
   {
     "done": true,
-    "name": "Stabilize*",
+    "name": "Stabilize",
     "lvl": 9,
     "schools": "(Abjuration)",
     "range": "0 ",
@@ -6579,7 +6579,7 @@
   },
   {
     "done": true,
-    "name": "Wildfire*",
+    "name": "Wildfire",
     "lvl": 9,
     "schools": "(Invocation/Evocation)",
     "range": "0 ",
@@ -6592,7 +6592,7 @@
   },
   {
     "done": true,
-    "name": "Wildwind*",
+    "name": "Wildwind",
     "lvl": 9,
     "schools": "(Conjuration/Summoning)   ",
     "range": "100 yards ",
